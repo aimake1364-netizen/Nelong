@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>공학용 계산기</title>
+
+<style>
+body{
+    background:#1e1e1e;
+    font-family:Arial,Helvetica,sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.calculator{
+    width:430px;
+    background:#2d2d2d;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 0 20px rgba(0,0,0,.5);
+}
+
+.display{
+    width:100%;
+    height:70px;
+    font-size:30px;
+    text-align:right;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    margin-bottom:15px;
+    background:#fff;
+}
+
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+}
+
+button{
+    height:60px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#444;
+    color:white;
+    transition:.2s;
+}
+
+button:hover{
+    background:#666;
+}
+
+.operator{
+    background:#ff9500;
+}
+
+.equal{
+    background:#28a745;
+}
+
+.clear{
+    background:#dc3545;
+}
+</style>
+</head>
+
+<body>
+
+<div class="calculator">
+
+<input id="display" class="display" readonly>
+
+<div class="buttons">
+
+<button onclick="add('sin(')">sin</button>
+<button onclick="add('cos(')">cos</button>
+<button onclick="add('tan(')">tan</button>
+<button onclick="add('log(')">log</button>
+<button onclick="add('ln(')">ln</button>
+
+<button onclick="add('asin(')">asin</button>
+<button onclick="add('acos(')">acos</button>
+<button onclick="add('atan(')">atan</button>
+<button onclick="add('sqrt(')">√</button>
+<button onclick="add('^')">xʸ</button>
+
+<button onclick="add('(')">(</button>
+<button onclick="add(')')">)</button>
+<button onclick="add('pi')">π</button>
+<button onclick="add('e')">e</button>
+<button onclick="add('%')">%</button>
+
+<button onclick="add('7')">7</button>
+<button onclick="add('8')">8</button>
+<button onclick="add('9')">9</button>
+<button class="operator" onclick="add('/')">÷</button>
+<button onclick="factorial()">n!</button>
+
+<button onclick="add('4')">4</button>
+<button onclick="add('5')">5</button>
+<button onclick="add('6')">6</button>
+<button class="operator" onclick="add('*')">×</button>
+<button onclick="add('abs(')">abs</button>
+
+<button onclick="add('1')">1</button>
+<button onclick="add('2')">2</button>
+<button onclick="add('3')">3</button>
+<button class="operator" onclick="add('-')">−</button>
+<button onclick="add('exp(')">exp</button>
+
+<button onclick="add('0')">0</button>
+<button onclick="add('.')">.</button>
+<button class="clear" onclick="clearDisplay()">C</button>
+<button class="operator" onclick="add('+')">+</button>
+<button class="equal" onclick="calculate()">=</button>
+
+</div>
+
+</div>
+
+<script>
+
+const display=document.getElementById("display");
+
+function add(value){
+    display.value+=value;
+}
+
+function clearDisplay(){
+    display.value="";
+}
+
+function factorial(){
+
+    let n=parseInt(display.value);
+
+    if(isNaN(n)||n<0){
+        display.value="Error";
+        return;
+    }
+
+    let f=1;
+
+    for(let i=2;i<=n;i++)
+        f*=i;
+
+    display.value=f;
+}
+
+function calculate(){
+
+    try{
+
+        let exp=display.value;
+
+        exp=exp.replace(/\^/g,"**");
+        exp=exp.replace(/pi/g,Math.PI);
+        exp=exp.replace(/\be\b/g,Math.E);
+
+        exp=exp.replace(/sqrt\(/g,"Math.sqrt(");
+
+        exp=exp.replace(/sin\(/g,"Math.sin(");
+        exp=exp.replace(/cos\(/g,"Math.cos(");
+        exp=exp.replace(/tan\(/g,"Math.tan(");
+
+        exp=exp.replace(/asin\(/g,"Math.asin(");
+        exp=exp.replace(/acos\(/g,"Math.acos(");
+        exp=exp.replace(/atan\(/g,"Math.atan(");
+
+        exp=exp.replace(/log\(/g,"Math.log10(");
+        exp=exp.replace(/ln\(/g,"Math.log(");
+
+        exp=exp.replace(/abs\(/g,"Math.abs(");
+        exp=exp.replace(/exp\(/g,"Math.exp(");
+
+        exp=exp.replace(/%/g,"/100");
+
+        let result=eval(exp);
+
+        display.value=result;
+
+    }catch{
+
+        display.value="Error";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
